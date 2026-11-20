@@ -1,0 +1,15 @@
+# Sistema
+.DS_Store
+__pycache__/
+*.pyc
+
+# Nunca subir datos de personas ni de viajes
+perfil.md
+perfiles/
+*.xlsx
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.heic
+*.skill
