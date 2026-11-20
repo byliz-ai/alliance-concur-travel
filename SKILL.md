@@ -1,6 +1,8 @@
 ---
 name: alliance-concur-travel
 description: Prepares and fills in SAP Concur travel requests (Travel Request) and expense reports (Expense Report / Expense Claim) for any staff member of the Alliance of Bioversity International and CIAT (CIAT or Bioversity entity, any hub) from receipts, tickets and boarding passes, and builds the supporting expense sheet in Excel and PDF. Use it whenever someone mentions Concur, an expense report or claim, a travel request, a cash advance, per diem, M&I, DSA or trip receipts, or says things like "I need to do the expense report for my trip to…", "help me with Concur", "my report was sent back" or "create my travel request", even if they don't name the skill. ES — legalizar, legalización, reporte de gastos, solicitud de viaje, anticipo, viáticos, "tengo que legalizar el viaje a…", "me devolvieron el reporte". FR — note de frais, demande de voyage.
+metadata:
+  version: "1.3"
 ---
 
 # Travel expense reports in SAP Concur (Alliance Bioversity–CIAT)
@@ -20,6 +22,8 @@ Skill files (read them when a step says so):
 - `references/concur-browser.md`: how to drive Concur in the browser without errors, copy lines, attach receipts, and what the browser can't do.
 - `scripts/expense_sheet.py` and `assets/example_sheet.json`: generate the supporting expense sheet (Excel + PDF).
 - `assets/profile-template.md`: template for each user's profile.
+- `assets/field-note-template.md`: template for the anonymous field note (see "Closing every use: learn").
+- `references/maintaining.md`: only for whoever maintains the skill (reviewing field notes, publishing a release).
 
 ## Non-negotiable rules
 
@@ -37,8 +41,12 @@ The profile keeps what doesn't change from trip to trip (entity, hub, Accounting
 - If it exists, read it at the start.
 - If it doesn't, create it from `assets/profile-template.md`, filling in what you see in Concur (UNIT field, entity, Accounting Office, recent codes, interface language) and asking only for what's missing. Show the person what you saved.
 - If you're helping with a colleague's account, don't save their profile there unless the person asks (it can go in `~/.claude/alliance-concur-travel/profiles/<name>.md`).
+- The profile's **Lessons** section holds what processors asked for or sent back before. Read it at the start and check the report against it in step 12.
+- **Where files last:** if this skill runs from a folder under `~/.claude/skills` (Claude Code, the Code tab of the desktop app), the profile file persists. If it runs in a sandbox that resets with every conversation (e.g. a skill uploaded to the Claude chat app, under a path like `/mnt/skills/`), anything saved there is lost. In that case, at the end give the person the full profile as text and suggest keeping it in a Claude Project (project knowledge) or in Claude's memory; at the start, look for it in the project or conversation and ask them to paste it if it isn't there.
 
 ## Getting started: the opening message
+
+First, quietly check whether there's a newer version: compare `metadata.version` at the top of this file with the `tag_name` of the latest release (`curl -s https://api.github.com/repos/byliz-ai/alliance-concur-travel/releases/latest`; on Windows `(Invoke-RestMethod https://api.github.com/repos/byliz-ai/alliance-concur-travel/releases/latest).tag_name`). If the release is newer (e.g. `v1.4` vs `1.3`), add one line to the opening message saying so and how to update (https://github.com/byliz-ai/alliance-concur-travel#install). If there's no internet or the call fails, skip it without comment.
 
 Before touching Concur, send **one single message** that gives the person all the information, so they aren't surprised when you ask for something halfway through. It must include:
 
@@ -59,6 +67,7 @@ Before touching Concur, send **one single message** that gives the person all th
    | After the lines are entered | Upload the receipts to "Available Receipts" (a few clicks) | The browser can't upload files |
    | After the receipts are attached | Upload the expense sheet PDF to "Report Attachments" | Same reason |
    | At the end | Review and submit the report | The signature is the traveler's |
+   | At the end | Approve the lessons saved to their profile and, if they want, send an anonymous field note | Nothing is saved or shared without their OK |
 
 4. **How long it takes**: with about 20 receipts, entering and attaching in Concur takes roughly an hour of browser work. Tell them that if they press the stop button or type while you're working, the current step is cut short; that's fine, they just need to tell you "continue".
 5. **First questions**, only those essential to get going (whose trip it is, where the files are). Decision questions come after reading the receipts.
@@ -158,6 +167,7 @@ Manage Receipts → Manage Attachments → **Add** opens the computer's file pic
 
 - Open "View Alerts": there must be **0 errors**. Explain every warning left (the cash advance one and "reconcile Fare" are fixed reminders that don't go away).
 - Confirm that no line is left without a receipt.
+- Check the report against the **Lessons** in the profile (what was sent back before) and point out anything that could repeat.
 - Deliver the summary in a table that separates what the company pays from what is reimbursed. This distinction is confusing: explain it in plain words ("the Alliance paid the agency for the ticket; you don't get it back, it's only recorded").
 
   | | Reimbursement currency |
@@ -167,7 +177,7 @@ Manage Receipts → Manage Attachments → **Add** opens the computer's file pic
   | **Report total** | … |
 
 - List what the processor might ask about: days over the cap, large meals that might have been shared, extra ticket cost due to personal days, missed deadline.
-- If you learned something for the profile (currency, agency, codes), update the profile.
+- Then do the closing in "Closing every use: learn".
 
 ### 13. 🙋 The person submits
 
@@ -179,18 +189,38 @@ Tell them exactly where the button is ("Submit Report", top right) and that by s
 2. Build the header and the expected expenses per `references/alliance-concur.md` §0.2 and §6. Estimate hotel and M&I with DSA rates (ask for the value from the Power BI calculator or let Concur calculate it; don't make it up). If there will be personal days, tick "Personal Travel on this trip" right away.
 3. Show the draft: title (max 32 characters: where – when – what), purpose, dates and expected expenses.
 4. If asked, fill it in Concur and leave it unsubmitted (Create Request saves a draft). Remind them to attach the itinerary and the quote. If there are intercity train or bus legs, include them as expected expenses so they aren't missing from the TR at expense report time.
+5. Close with "Closing every use: learn".
 
 ## When a report is sent back
 
 Find the Concur notification (email from `AutoNotification@concursolutions.com`, if there's an Outlook connector, or the Report Timeline in Concur) with the processor's comment, identify which line failed and why, propose the specific fix and, if they want, fix it in Concur without resubmitting.
 
+This is the best source of learning: the processor's comment is a real rule for that hub. Always turn it into a lesson for the profile and a field note (see "Closing every use: learn").
+
+## Closing every use: learn
+
+At the end of every use (expense report, travel request or a report sent back), before your final message, do both parts. Nothing is saved or sent without the person's OK.
+
+**1. Lessons for the person (private, in their profile).**
+- Propose at most 3 concrete changes as a short list: settings that changed or were confirmed (currency, agency, codes, the hub's sheet template) and lessons (what a processor asked for or sent back, a recurring mistake, how they like to work). E.g. "Lesson (Nov 2026): the NBO processor wants the expense sheet PDF in Report Attachments."
+- Save them only if the person says yes. Keep the Lessons section short: merge repeats, drop what no longer applies, about 15 at most.
+
+**2. Field note for everyone (anonymous, optional).**
+- Only if something is useful beyond this person: a screen, field or message that didn't match the references; a new error or warning; a rule of their hub or entity; a processor's reason for sending a report back; a step that failed, or a better way to do it. If there's nothing, skip this part without mentioning it.
+- Write it with `assets/field-note-template.md`. **It must be anonymous:** no names, emails, amounts linked to the person, card digits, report or TR IDs, or budget codes. Hub, entity, interface language, expense type and Concur's exact wording are fine.
+- Show it to the person and save it in `~/.claude/alliance-concur-travel/field-notes/<yyyy-mm-dd>-<topic>.md`.
+- Offer how to send it, and say that issues in this repo are **public**:
+  - With a GitHub account: https://github.com/byliz-ai/alliance-concur-travel/issues/new/choose → "Field note", and paste it. If the `gh` CLI is logged in and the person explicitly says yes, you can create it for them: `gh issue create --repo byliz-ai/alliance-concur-travel --label field-note --title "[Field note] <topic>" --body-file <note>`.
+  - Without GitHub: they send the note to whoever shared the skill with them (Teams or email), who files it.
+
 ## Keeping the skill up to date
 
-If a field, menu or message doesn't match the references, stop, tell the person what you saw and fix the relevant reference (or note it for whoever maintains the skill). The Finance guides are from 2023 and the screens change; each hub and entity has its own variations.
+If a field, menu or message doesn't match the references, stop, tell the person what you saw and go with what's on screen; record it in the field note at the end. The Finance guides are from 2023 and the screens change; each hub and entity has its own variations.
 
-If the skill folder is a git repo, after a fix commit with a message that says what changed (no personal data) and ask before pushing. To package a `.skill` from the repo, leave out `.git`, `README.md` and `.gitignore` (e.g. `git archive --prefix=alliance-concur-travel/ HEAD -- SKILL.md references scripts assets`).
+Don't edit the skill's own files on a user's machine: their copy would drift from everyone else's and be overwritten by the next update. Fixes come back through field notes and a new release. The exception is the person who maintains the skill (write access to the repo) when they ask to review field notes, update the skill or publish a release: then follow `references/maintaining.md`.
 
 ## Privacy
 
 - Receipts contain personal and financial data. Work with local files; don't upload them to external services or paste them into web searches.
 - Profiles live outside the skill; don't copy them into it. If you update the references, record only general things (forms, messages, office codes, agencies), never an individual's data.
+- Field notes end up in a public place: anonymize them as described in "Closing every use: learn", and never send one without the person's yes.

@@ -13,3 +13,12 @@ Created the first time the skill is used and saved in `~/.claude/alliance-concur
 - **Usual travel agency**: and whether it's registered as a supplier in Concur.
 - **Browser**: Claude's Browser pane or Chrome.
 - **How they like to work**: e.g. resolve pending items one at a time; conversation language.
+- **Hub expense sheet template**: none / file name and where it is.
+
+## Lessons
+
+What processors asked for or sent back, recurring mistakes, things that worked. One line each, with month and year; the newest first. Merge repeats and drop what no longer applies (about 15 at most). Read before every report and check the report against them before the person submits.
+
+- (Mon YYYY) …
+
+_Last updated: <date>_
