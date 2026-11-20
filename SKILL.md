@@ -1,5 +1,5 @@
 ---
-name: legalizar-viaje
+name: alliance-concur-travel
 description: Prepares and fills in SAP Concur travel requests (Travel Request) and expense reports (Expense Report / Expense Claim) for any staff member of the Alliance of Bioversity International and CIAT (CIAT or Bioversity entity, any hub) from receipts, tickets and boarding passes, and builds the supporting expense sheet in Excel and PDF. Use it whenever someone mentions Concur, an expense report or claim, a travel request, a cash advance, per diem, M&I, DSA or trip receipts, or says things like "I need to do the expense report for my trip to…", "help me with Concur", "my report was sent back" or "create my travel request", even if they don't name the skill. ES — legalizar, legalización, reporte de gastos, solicitud de viaje, anticipo, viáticos, "tengo que legalizar el viaje a…", "me devolvieron el reporte". FR — note de frais, demande de voyage.
 ---
 
@@ -32,11 +32,11 @@ Skill files (read them when a step says so):
 
 ## First use: the profile
 
-The profile keeps what doesn't change from trip to trip (entity, hub, Accounting Office, reimbursement currency, corporate card, usual codes, travel agency, how the person likes to work). It lives **outside the skill**, in `~/.claude/legalizar-viaje/profile.md` (on Windows, `%USERPROFILE%\.claude\legalizar-viaje\profile.md`), so it isn't shared when the skill is passed on and isn't lost when the skill is updated.
+The profile keeps what doesn't change from trip to trip (entity, hub, Accounting Office, reimbursement currency, corporate card, usual codes, travel agency, how the person likes to work). It lives **outside the skill**, in `~/.claude/alliance-concur-travel/profile.md` (on Windows, `%USERPROFILE%\.claude\alliance-concur-travel\profile.md`), so it isn't shared when the skill is passed on and isn't lost when the skill is updated.
 
 - If it exists, read it at the start.
 - If it doesn't, create it from `assets/profile-template.md`, filling in what you see in Concur (UNIT field, entity, Accounting Office, recent codes, interface language) and asking only for what's missing. Show the person what you saved.
-- If you're helping with a colleague's account, don't save their profile there unless the person asks (it can go in `~/.claude/legalizar-viaje/profiles/<name>.md`).
+- If you're helping with a colleague's account, don't save their profile there unless the person asks (it can go in `~/.claude/alliance-concur-travel/profiles/<name>.md`).
 
 ## Getting started: the opening message
 
@@ -188,7 +188,7 @@ Find the Concur notification (email from `AutoNotification@concursolutions.com`,
 
 If a field, menu or message doesn't match the references, stop, tell the person what you saw and fix the relevant reference (or note it for whoever maintains the skill). The Finance guides are from 2023 and the screens change; each hub and entity has its own variations.
 
-If the skill folder is a git repo, after a fix commit with a message that says what changed (no personal data) and ask before pushing. To package a `.skill` from the repo, leave out `.git`, `README.md` and `.gitignore` (e.g. `git archive --prefix=legalizar-viaje/ HEAD -- SKILL.md references scripts assets`).
+If the skill folder is a git repo, after a fix commit with a message that says what changed (no personal data) and ask before pushing. To package a `.skill` from the repo, leave out `.git`, `README.md` and `.gitignore` (e.g. `git archive --prefix=alliance-concur-travel/ HEAD -- SKILL.md references scripts assets`).
 
 ## Privacy
 

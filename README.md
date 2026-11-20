@@ -1,8 +1,8 @@
-# legalizar-viaje
+# alliance-concur-travel
 
 A Claude skill that prepares **SAP Concur** travel requests (Travel Request) and expense reports (Expense Report / Expense Claim) for any staff member of the **Alliance of Bioversity International and CIAT**, whether in the CIAT or Bioversity entity and at any hub.
 
-*The name is Spanish for "settle a trip's expenses". The skill talks to each person in their own language (English, Spanish, French…) and always writes in English in Concur and in the expense sheet.*
+*The skill talks to each person in their own language (English, Spanish, French…) and always writes in English in Concur and in the expense sheet.*
 
 ## What it does
 
@@ -16,15 +16,15 @@ It **never** submits the report, approves anything or types passwords. The perso
 
 ## Install
 
-**Claude app (desktop or claude.ai):** download `legalizar-viaje.skill` from [Releases](../../releases) and upload it in the skills settings (Capabilities → Skills).
+**Claude app (desktop or claude.ai):** download `alliance-concur-travel.skill` from [Releases](../../releases) and upload it in the skills settings (Capabilities → Skills).
 
 **Claude Code:**
 
 ```bash
-git clone https://github.com/byliz-ai/legalizar-viaje.git ~/.claude/skills/legalizar-viaje
+git clone https://github.com/byliz-ai/alliance-concur-travel.git ~/.claude/skills/alliance-concur-travel
 ```
 
-To update: `git -C ~/.claude/skills/legalizar-viaje pull`.
+To update: `git -C ~/.claude/skills/alliance-concur-travel pull`.
 
 ## Requirements
 
@@ -35,7 +35,7 @@ To update: `git -C ~/.claude/skills/legalizar-viaje pull`.
 
 ## First use
 
-The first time, the skill asks for the basics and saves them in `~/.claude/legalizar-viaje/profile.md`: entity, hub, unit, reimbursement currency, corporate card, travel agency and browser. That profile stays **only on each person's computer**; it is not part of this repo.
+The first time, the skill asks for the basics and saves them in `~/.claude/alliance-concur-travel/profile.md`: entity, hub, unit, reimbursement currency, corporate card, travel agency and browser. That profile stays **only on each person's computer**; it is not part of this repo.
 
 To start, just tell Claude something like "I need to do the expense report for my trip to Rome" or "help me with Concur".
 
