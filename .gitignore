@@ -1,9 +1,11 @@
-# Sistema
+# System
 .DS_Store
 __pycache__/
 *.pyc
 
-# Nunca subir datos de personas ni de viajes
+# Never commit personal or trip data
+profile.md
+profiles/
 perfil.md
 perfiles/
 *.xlsx

@@ -1,196 +1,196 @@
 ---
 name: legalizar-viaje
-description: Prepara y llena en SAP Concur las solicitudes de viaje (Travel Request) y las legalizaciones (Expense Report/Claim) de cualquier empleado de la Alliance of Bioversity International and CIAT (entidad CIAT o Bioversity, cualquier sede) a partir de recibos, tiquetes y pases de abordar, y arma la hoja de gastos de soporte en Excel y PDF. Úsala siempre que alguien mencione Concur, legalizar, reporte de gastos, solicitud de viaje, anticipo, viáticos, per diem, DSA o recibos de un viaje, o diga "tengo que legalizar el viaje a…", "ayúdame con Concur", "me devolvieron el reporte" o "hazme la solicitud de viaje", aunque no nombre la skill. EN — Alliance SAP Concur travel requests and expense reports/claims from receipts; trigger on "expense report", "expense claim", "travel request", "per diem", "Concur", "my report was sent back". FR — note de frais, demande de voyage.
+description: Prepares and fills in SAP Concur travel requests (Travel Request) and expense reports (Expense Report / Expense Claim) for any staff member of the Alliance of Bioversity International and CIAT (CIAT or Bioversity entity, any hub) from receipts, tickets and boarding passes, and builds the supporting expense sheet in Excel and PDF. Use it whenever someone mentions Concur, an expense report or claim, a travel request, a cash advance, per diem, M&I, DSA or trip receipts, or says things like "I need to do the expense report for my trip to…", "help me with Concur", "my report was sent back" or "create my travel request", even if they don't name the skill. ES — legalizar, legalización, reporte de gastos, solicitud de viaje, anticipo, viáticos, "tengo que legalizar el viaje a…", "me devolvieron el reporte". FR — note de frais, demande de voyage.
 ---
 
-# Legalizar viajes en SAP Concur (Alliance Bioversity–CIAT)
+# Travel expense reports in SAP Concur (Alliance Bioversity–CIAT)
 
-El objetivo es que el empleado dedique minutos, no horas, a Concur: tú lees los recibos, clasificas, calculas, digitas y adjuntas; la persona decide lo que solo ella sabe, hace los pocos pasos que el navegador no puede hacer, y envía. Los reportes se devuelven casi siempre por lo mismo (campo obligatorio vacío, tipo de gasto equivocado, fecha que no coincide con el recibo, falta un soporte, días personales sin declarar), así que la revisión previa vale tanto como la digitación.
+The goal is for staff to spend minutes, not hours, in Concur: you read the receipts, classify, calculate, type and attach; the person decides what only they know, does the few steps the browser can't do, and submits. Reports are almost always sent back for the same reasons (empty required field, wrong expense type, date that doesn't match the receipt, missing receipt, undeclared personal days), so the review beforehand is worth as much as the data entry.
 
-**Idioma:** conversa en el idioma de la persona (español, inglés, francés…). Lo que se escribe en Concur (propósitos, comentarios) y la hoja de gastos van en inglés, que es lo que leen los procesadores.
+**Language:** talk to the person in their language (Spanish, English, French…). What goes into Concur (purposes, comments) and the expense sheet is written in English, which is what the processors read.
 
-Hay dos modos. Decide cuál por lo que pida:
+There are two modes. Pick one based on the request:
 
-- **Solicitud (Travel Request, TR)**: antes del viaje. Sin TR aprobada no se puede gastar ni viajar.
-- **Legalización (Expense Report / Expense Claim)**: después del viaje. Plazo: **15 días calendario** desde el regreso (con tarjeta corporativa la portada de Concur habla de 40 días; apunta a 15). Si ya va tarde, dilo al empezar.
+- **Travel Request (TR)**: before the trip. Without an approved TR there is no spending and no travel.
+- **Expense report (Expense Report / Expense Claim)**: after the trip. Deadline: **15 calendar days** from the return (with a corporate card the Concur home page mentions 40 days; aim for 15). If it's already late, say so at the start.
 
-Archivos de la skill (léelos cuando el paso lo indique):
+Skill files (read them when a step says so):
 
-- `references/alliance-concur.md`: tipos de gasto, reglas de la política de viajes, diferencias CIAT/Bioversity, sedes, y lo visto en la pantalla real de Concur.
-- `references/navegador-concur.md`: cómo manejar Concur en el navegador sin errores, copiar líneas, adjuntar recibos y qué no puede hacer el navegador.
-- `scripts/hoja_gastos.py` y `assets/ejemplo_hoja.json`: generan la hoja de gastos de soporte (Excel + PDF).
-- `assets/perfil-plantilla.md`: plantilla del perfil de cada usuario.
+- `references/alliance-concur.md`: expense types, travel policy rules, CIAT/Bioversity differences, hubs, and what the real Concur screens look like.
+- `references/concur-browser.md`: how to drive Concur in the browser without errors, copy lines, attach receipts, and what the browser can't do.
+- `scripts/expense_sheet.py` and `assets/example_sheet.json`: generate the supporting expense sheet (Excel + PDF).
+- `assets/profile-template.md`: template for each user's profile.
 
-## Reglas que no se negocian
+## Non-negotiable rules
 
-- **Nunca enviar (Submit Report) ni aprobar** reportes o solicitudes. Al enviar, el viajero certifica que los gastos son reales; esa firma es suya. Todo queda en borrador.
-- **Nunca escribir credenciales** ni aprobar el Authenticator; si Concur pide sesión, la inicia la persona.
-- **Nunca inventar un dato.** Un recibo ilegible o un monto que no aparece (p. ej. un aviso de tren sin precio) se marca como pendiente y se pregunta. Un valor inventado en un reporte de gastos es un problema serio para el viajero.
-- **Nunca borrar** recibos, archivos ni líneas sin que lo pida. En Concur el ícono de Delete está pegado al de Attach (ver navegador §5).
-- No mover ni renombrar los archivos originales: trabajar con copias.
-- Trabajar solo en la cuenta que la persona abrió y le corresponde manejar (la suya, o la de alguien que la tiene como delegada en Concur). Si la cuenta abierta es de otra persona, dilo y confirma antes de tocar nada.
+- **Never submit (Submit Report) or approve** reports or requests. By submitting, the traveler certifies that the expenses are real; that signature is theirs. Everything stays as a draft.
+- **Never type credentials** or approve Authenticator prompts; if Concur asks for a login, the person does it.
+- **Never invent data.** An unreadable receipt or a missing amount (e.g. a train notice without a price) is marked as pending and asked about. An invented value in an expense report is a serious problem for the traveler.
+- **Never delete** receipts, files or lines unless asked. In Concur the Delete icon sits right next to Attach (see browser §5).
+- Don't move or rename the original files: work on copies.
+- Work only in the account the person opened and is entitled to manage (their own, or someone else's who has made them a delegate in Concur). If the open account belongs to someone else, say so and confirm before touching anything.
 
-## Primer uso: el perfil
+## First use: the profile
 
-El perfil guarda lo que no cambia de un viaje a otro (entidad, sede, Accounting Office, moneda de reembolso, tarjeta corporativa, códigos habituales, agencia de viajes, cómo prefiere trabajar). Vive **fuera de la skill**, en `~/.claude/legalizar-viaje/perfil.md` (en Windows, `%USERPROFILE%\.claude\legalizar-viaje\perfil.md`), para que no se comparta al pasar la skill a otros ni se pierda al actualizarla.
+The profile keeps what doesn't change from trip to trip (entity, hub, Accounting Office, reimbursement currency, corporate card, usual codes, travel agency, how the person likes to work). It lives **outside the skill**, in `~/.claude/legalizar-viaje/profile.md` (on Windows, `%USERPROFILE%\.claude\legalizar-viaje\profile.md`), so it isn't shared when the skill is passed on and isn't lost when the skill is updated.
 
-- Si existe, léelo al empezar.
-- Si no existe, créalo con `assets/perfil-plantilla.md`, llenando lo que veas en Concur (campo UNIT, entidad, Accounting Office, códigos recientes, idioma de la interfaz) y preguntando solo lo que falte. Muéstrale a la persona qué guardaste.
-- Si ayudas con la cuenta de un colega, no guardes su perfil ahí salvo que la persona lo pida (puede ir en `~/.claude/legalizar-viaje/perfiles/<nombre>.md`).
+- If it exists, read it at the start.
+- If it doesn't, create it from `assets/profile-template.md`, filling in what you see in Concur (UNIT field, entity, Accounting Office, recent codes, interface language) and asking only for what's missing. Show the person what you saved.
+- If you're helping with a colleague's account, don't save their profile there unless the person asks (it can go in `~/.claude/legalizar-viaje/profiles/<name>.md`).
 
-## Al empezar: el mensaje de arranque
+## Getting started: the opening message
 
-Antes de tocar Concur, manda **un solo mensaje** que deje a la persona con toda la información, para que no se sorprenda cuando le pidas algo a mitad del trabajo. Debe incluir:
+Before touching Concur, send **one single message** that gives the person all the information, so they aren't surprised when you ask for something halfway through. It must include:
 
-1. **Qué vas a hacer**, en 4–6 pasos cortos.
-2. **Qué necesitas**, como lista para revisar (adapta al caso):
-   - Concur abierto con sesión iniciada (en el panel Browser de Claude o en Chrome con la extensión de Claude), en la cuenta del viajero.
-   - Los recibos del viaje (fotos o PDF) en la carpeta de Descargas o pegados en el chat, incluidos Uber/taxis.
-   - El correo o factura de la agencia con el **precio del tiquete**, y los **pases de abordar** de ida y regreso.
-   - Billetes de tren o bus con su **precio** (un aviso de viaje sin precio no sirve).
-   - Si alguna comida la dio el evento u organizador, y si hubo anticipo.
-   - Si el procesador de su sede pide un formato propio de hoja de gastos, el archivo de ejemplo.
-3. **Cuándo va a tener que intervenir** (usa esta tabla):
+1. **What you'll do**, in 4–6 short steps.
+2. **What you need**, as a checklist (adapt it to the case):
+   - Concur open and logged in (in Claude's Browser pane or in Chrome with the Claude extension), in the traveler's account.
+   - The trip receipts (photos or PDFs) in the Downloads folder or pasted into the chat, including Uber/taxis.
+   - The agency email or invoice with the **ticket price**, and the outbound and return **boarding passes**.
+   - Train or bus tickets with their **price** (a travel notice without a price doesn't work).
+   - Whether the event or organizer provided any meals, and whether there was a cash advance.
+   - If the processor at their hub asks for its own expense sheet format, the sample file.
+3. **When they'll need to step in** (use this table):
 
-   | Momento | Qué hace la persona | Por qué |
+   | When | What the person does | Why |
    |---|---|---|
-   | Al inicio | Iniciar sesión en Concur si hace falta | Las credenciales son suyas |
-   | Tras leer los recibos | Responder preguntas de decisión (días personales, quién pagó qué, tarjeta, moneda de reembolso) | Solo ella lo sabe |
-   | Tras cargar las líneas | Subir los soportes a "Available Receipts" (unos clics) | El navegador no puede subir archivos |
-   | Tras adjuntar los recibos | Subir el PDF de la hoja de gastos en "Report Attachments" | Mismo motivo |
-   | Al final | Revisar y enviar el reporte | La firma es del viajero |
+   | At the start | Log in to Concur if needed | The credentials are theirs |
+   | After the receipts are read | Answer decision questions (personal days, who paid what, card, reimbursement currency) | Only they know |
+   | After the lines are entered | Upload the receipts to "Available Receipts" (a few clicks) | The browser can't upload files |
+   | After the receipts are attached | Upload the expense sheet PDF to "Report Attachments" | Same reason |
+   | At the end | Review and submit the report | The signature is the traveler's |
 
-4. **Cuánto toma**: con unos 20 recibos, cargar y adjuntar en Concur lleva del orden de una hora de trabajo en el navegador. Avísale que, si toca el botón de detener o escribe mientras trabajas, el paso en curso se corta; que no pasa nada, solo hay que decirte "sigue".
-5. **Primeras preguntas**, solo las indispensables para arrancar (de quién es el viaje, dónde están los archivos). Las de decisión van después de leer los recibos.
+4. **How long it takes**: with about 20 receipts, entering and attaching in Concur takes roughly an hour of browser work. Tell them that if they press the stop button or type while you're working, the current step is cut short; that's fine, they just need to tell you "continue".
+5. **First questions**, only those essential to get going (whose trip it is, where the files are). Decision questions come after reading the receipts.
 
-Si la persona prefiere ir "uno por uno", plantea las decisiones de a una, con botones, y avanza en cuanto responda cada una.
+If the person prefers to go "one by one", ask the decisions one at a time, with buttons, and move on as soon as they answer each one.
 
-### Si no hay navegador disponible
+### If no browser is available
 
-Si ni el panel Browser ni Chrome están conectados, igual puedes hacer los pasos 2–5 y 8 (leer, clasificar, preguntar, preparar la carpeta y la hoja de gastos) y entregar una tabla en el orden en que se digita, con cada campo de Concur, para que la persona la cargue a mano. Dilo al empezar.
+If neither the Browser pane nor Chrome is connected, you can still do steps 2–5 and 8 (read, classify, ask, prepare the folder and the expense sheet) and deliver a table in data-entry order, with every Concur field, so the person can enter it by hand. Say so at the start.
 
-## Modo legalización
+## Expense report mode
 
-### 1. Ubicar Concur y la cuenta
+### 1. Find Concur and the account
 
-Sigue `references/navegador-concur.md` §1: encuentra la pestaña de Concur y **lee de quién es la cuenta** en el menú de perfil. Revisa la portada: solicitudes aprobadas sin reporte, reportes en borrador, aprobaciones pendientes (estas no se tocan).
+Follow `references/concur-browser.md` §1: find the Concur tab and **read whose account it is** in the profile menu. Check the home page: approved requests without a report, draft reports, pending approvals (don't touch those).
 
-Abre la TR del viaje (Requests → la solicitud) y anota: ID, fechas, propósito, código presupuestal o AEC, Accounting Office y **cada línea aprobada** (tipo y monto). Las líneas que no estén en la TR igual se pueden cargar, pero llevan explicación. Si hay un conector de Outlook disponible, los avisos de Concur (remitente `concursolutions.com`) también sirven para ubicar la TR.
+Open the trip's TR (Requests → the request) and note: ID, dates, purpose, budget code or AEC, Accounting Office and **each approved line** (type and amount). Lines that aren't in the TR can still be entered, but they need an explanation. If an Outlook connector is available, Concur notifications (sender `concursolutions.com`) also help find the TR.
 
-### 2. Reunir los soportes
+### 2. Gather the receipts
 
-- Busca en Descargas los archivos recientes (macOS/Linux: `ls -lt ~/Downloads | head`; Windows: `Get-ChildItem $HOME\Downloads | Sort-Object LastWriteTime -Descending | Select-Object -First 15`).
-- Los nombres de WhatsApp en macOS traen un espacio especial antes de "AM/PM": copia con comodín (`cp ~/Downloads/WhatsApp\ Image\ 2026-11-20\ at\ 11.10.21*`) en vez de escribir el nombre.
-- Los PDF e imágenes se leen directo con Read. Con muchas fotos, arma una hoja de contacto (miniaturas con PIL y su nombre de archivo) para leerlas de una vez y saber qué archivo es cada recibo. Para usar PIL no ejecutes Python con `-I` (no encuentra los paquetes del usuario).
-- Fíjate en lo que aparezca mientras trabajas: la persona suele ir agregando archivos (pases, tiquetes, billetes).
+- Look for recent files in Downloads (macOS/Linux: `ls -lt ~/Downloads | head`; Windows: `Get-ChildItem $HOME\Downloads | Sort-Object LastWriteTime -Descending | Select-Object -First 15`).
+- WhatsApp file names on macOS have a special space before "AM/PM": copy with a wildcard (`cp ~/Downloads/WhatsApp\ Image\ 2026-11-20\ at\ 11.10.21*`) instead of typing the name.
+- PDFs and images can be read directly with Read. With many photos, build a contact sheet (thumbnails with PIL and their file names) to read them all at once and know which file is which receipt. To use PIL, don't run Python with `-I` (it won't find the user's packages).
+- Watch for new files while you work: people often keep adding files (boarding passes, tickets).
 
-### 3. Leer y clasificar
+### 3. Read and classify
 
-De cada soporte saca: fecha y hora, proveedor, ciudad, valor, moneda, **últimos dígitos de la tarjeta** y qué se compró. Luego:
+From each receipt get: date and time, vendor, city, amount, currency, **last digits of the card** and what was bought. Then:
 
-- **Tipo de gasto** según `references/alliance-concur.md` §0.6 y §1: comidas → "Meals and incidentals" (una línea por recibo en zona urbana); Uber/taxi → "Local Transport"; tiquete aéreo → "Fare Int." o "Fare National"; tren o bus entre ciudades → "Fare National"; hotel → "Hotel / Room Allowance"; SIM, seguro, tasas → "Travel Expenses - General & miscellaneous"; visa → "Visas"; comida con invitados → "Representation - Hospitality Expenses".
-- **Comida del día** por la hora: antes de las 11 desayuno, 11–17 almuerzo, después de las 17 cena; varios recibos chicos de la noche (tapas, bar) suman a la cena; un café suelto en tránsito puede ir como imprevisto.
-- **Días oficiales vs. personales:** compara las fechas de la TR con los **pases de abordar** y con los lugares de los recibos. Si el vuelo de regreso es días después del fin de la TR, o hay recibos en una ciudad que no es la del evento, hay días personales: pregúntalo, no lo asumas.
-- **Tope diario de comidas**: monto de M&I aprobado en la TR ÷ días. Señala los días que lo pasan.
-- **Zona rural**: si el viaje fue rural, M&I se declara por día con porcentajes, sin recibos (ver referencia §3).
+- **Expense type** per `references/alliance-concur.md` §0.6 and §1: meals → "Meals and incidentals" (one line per receipt in urban areas); Uber/taxi → "Local Transport"; air ticket → "Fare Int." or "Fare National"; intercity train or bus → "Fare National"; hotel → "Hotel / Room Allowance"; SIM, insurance, fees → "Travel Expenses - General & miscellaneous"; visa → "Visas"; meal with guests → "Representation - Hospitality Expenses".
+- **Meal of the day** by time: before 11:00 breakfast, 11:00–17:00 lunch, after 17:00 dinner; several small evening receipts (tapas, bar) add up to dinner; a single coffee in transit can go as incidentals.
+- **Official vs. personal days:** compare the TR dates with the **boarding passes** and with where the receipts are from. If the return flight is days after the TR ends, or there are receipts in a city that isn't the event's, there are personal days: ask, don't assume.
+- **Daily meal cap**: M&I amount approved in the TR ÷ days. Flag the days that exceed it.
+- **Rural area**: if the trip was rural, M&I is claimed per day with percentages, without receipts (see reference §3).
 
-### 4. 🙋 Preguntas de decisión
+### 4. 🙋 Decision questions
 
-Haz juntas (o de a una, si la persona lo prefiere) solo las que apliquen y no estén en el perfil:
+Ask them together (or one at a time, if the person prefers) — only those that apply and aren't in the profile:
 
-- ¿Las tarjetas usadas son personales o corporativas? (Si hay corporativa, sus cargos llegan solos a "Available Expenses"; compruébalo en Card Transactions.)
-- ¿Quién compró el tiquete aéreo (agencia de la Alliance o el viajero) y dónde está el precio?
-- ¿Quién pagó el tren o bus, y cuánto costó?
-- ¿Qué comidas dio el evento u organizador? ¿El hotel incluía desayuno?
-- ¿Hasta qué día fue oficial el viaje? ¿El día de regreso cuenta como oficial? ¿Qué gastos de ese día fueron personales (p. ej. un desvío)?
-- ¿Alguna comida fue compartida con otras personas? (Iría como Hospitality.)
-- ¿Hubo anticipo? ¿De cuánto?
-- Moneda de reembolso (Reimbursement Currency): Concur solo acepta las válidas para el Accounting Office de la persona; depende de la cuenta donde le reembolsan.
+- Are the cards used personal or corporate? (With a corporate card, the charges show up on their own in "Available Expenses"; check Card Transactions.)
+- Who bought the air ticket (the Alliance's agency or the traveler) and where is the price?
+- Who paid for the train or bus, and how much was it?
+- Which meals did the event or organizer provide? Did the hotel include breakfast?
+- Until which day was the trip official? Does the return day count as official? Which expenses that day were personal (e.g. a detour)?
+- Was any meal shared with other people? (It would go as Hospitality.)
+- Was there a cash advance? How much?
+- Reimbursement Currency: Concur only accepts the ones valid for the person's Accounting Office; it depends on the account they are reimbursed to.
 
-### 5. Preparar la carpeta del viaje
+### 5. Prepare the trip folder
 
-En la carpeta de Descargas crea `Legalizacion <número de reporte> - <viaje>/` y copia los soportes con nombres que empiecen por número de orden, fecha, proveedor y monto (`06 2026-10-26 Hotel X EUR48.00.JPG`). Dentro, una subcarpeta **`Para subir a Concur`** solo con lo que va al reporte (sin gastos personales ni avisos sin precio). Así cada recibo se reconoce en Concur sin abrirlo.
+In the Downloads folder create `Expense report <report number> - <trip>/` and copy the receipts with names that start with sequence number, date, vendor and amount (`06 2026-10-26 Hotel X EUR48.00.JPG`). Inside, a subfolder **`To upload to Concur`** with only what goes into the report (no personal expenses, no notices without a price). That way every receipt can be recognized in Concur without opening it.
 
-### 6. Crear el reporte y su encabezado
+### 6. Create the report and its header
 
-Desde la TR aprobada: botón **"Create Expense Report"** (arriba a la derecha). En el encabezado (Report Details → Report Header):
+From the approved TR: **"Create Expense Report"** button (top right). In the header (Report Details → Report Header):
 
-- **Reimbursement Currency**: la que respondió la persona. Sin ella Concur no deja enviar.
-- **Personal Travel on this trip**: "Yes" si hubo días personales.
-- **Comment**: una línea para el procesador, p. ej. "Official travel 25-30 Oct 2026 (30 Oct = return day). Personal days 31 Oct - 6 Nov at traveler's own cost; not claimed."
+- **Reimbursement Currency**: the one the person gave you. Without it Concur won't let them submit.
+- **Personal Travel on this trip**: "Yes" if there were personal days.
+- **Comment**: one line for the processor, e.g. "Official travel 25-30 Oct 2026 (30 Oct = return day). Personal days 31 Oct - 6 Nov at traveler's own cost; not claimed."
 
-### 7. Cargar las líneas
+### 7. Enter the lines
 
-Sigue `references/navegador-concur.md` §3–4 (orden seguro de campos, proveedor, Duplicate para comidas) y las diferencias por entidad de `references/alliance-concur.md` §0.8. Criterios:
+Follow `references/concur-browser.md` §3–4 (safe field order, supplier, Duplicate for meals) and the entity differences in `references/alliance-concur.md` §0.8. Criteria:
 
-- **Con tarjeta corporativa**: los cargos ya están en "Available Expenses". Agrégalos al reporte desde ahí (Add Expense → Select from Available Expenses), ponles el tipo y adjunta el recibo; no los crees a mano (quedarían duplicados). Quien tiene tarjeta corporativa no debería reclamar gastos de bolsillo salvo excepciones.
-- **Gastos de bolsillo** (efectivo o tarjeta personal): Out-of-Pocket, comentario con el proveedor real y los últimos dígitos de la tarjeta. Usuarios de entidad CIAT: proveedor "(00000000) N/A" si el comercio no está registrado.
-- **Tiquete de la agencia**: "Fare Int." (o "Fare National" si es dentro del país), **Company Paid**, proveedor = la agencia (buscarla por nombre), fecha = emisión del tiquete, monto del correo o factura de la agencia, comentario con número de e-ticket, vuelos y si el regreso incluye días personales.
-- **Tren o bus pagado por el viajero**: "Fare National", Out-of-Pocket, fecha = compra, monto del billete.
-- Fechas de compra de semanas antes del viaje generan la advertencia "transaction date is older than your company allows": agrega en el comentario "Transaction date is the purchase date (dd Mmm), bought in advance of travel on dd Mmm."
-- **Anticipo**: los gastos de bolsillo se descuentan del anticipo; si sobra, línea "Cash Advance Return" por el saldo (referencia §5).
-- **Días personales**: sus gastos no se cargan. Si el tiquete costó más por esos días, la diferencia va como "A/R Employees for Travel and Office Expenses" (hace falta una cotización con regreso en la fecha oficial para calcularla; si no la hay, avísalo).
+- **With a corporate card**: the charges are already in "Available Expenses". Add them to the report from there (Add Expense → Select from Available Expenses), set the type and attach the receipt; don't create them by hand (they'd be duplicated). Corporate card holders shouldn't claim out-of-pocket expenses except in special cases.
+- **Out-of-pocket expenses** (cash or personal card): Out-of-Pocket, comment with the actual vendor and the last digits of the card. CIAT-entity users: supplier "(00000000) N/A" if the merchant isn't registered.
+- **Agency ticket**: "Fare Int." (or "Fare National" if domestic), **Company Paid**, supplier = the agency (search by name), date = ticket issue date, amount from the agency email or invoice, comment with the e-ticket number, flights and whether the return includes personal days.
+- **Train or bus paid by the traveler**: "Fare National", Out-of-Pocket, date = purchase date, amount from the ticket.
+- Purchase dates weeks before the trip trigger the warning "transaction date is older than your company allows": add to the comment "Transaction date is the purchase date (dd Mmm), bought in advance of travel on dd Mmm."
+- **Cash advance**: out-of-pocket expenses are offset against the advance; if there's money left over, add a "Cash Advance Return" line for the balance (reference §5).
+- **Personal days**: their expenses aren't entered. If the ticket cost more because of those days, the difference goes as "A/R Employees for Travel and Office Expenses" (you need a quote with the return on the official date to calculate it; if there isn't one, say so).
 
-Al terminar, compara el número de líneas y el total con tu tabla.
+When you finish, compare the number of lines and the total with your table.
 
-### 8. Hoja de gastos de soporte (Excel + PDF)
+### 8. Supporting expense sheet (Excel + PDF)
 
-Algunos procesadores piden una hoja con el per diem por día y los demás gastos. Si la persona tiene un modelo de su sede, léelo y respeta su formato. Si no, usa el script:
+Some processors ask for a sheet with the per diem by day and the other expenses. If the person has a template from their hub, read it and follow its format. If not, use the script:
 
-1. Arma un JSON como `assets/ejemplo_hoja.json`: por día, los montos de cada recibo en moneda local y **la tasa que aplicó Concur ese día** (está en cada línea); en "otros", Uber, taxis, tren; en "notas", días personales y el tiquete Company Paid (va como nota, no en el total).
-2. Ejecuta `python3 <ruta de la skill>/scripts/hoja_gastos.py datos.json "<carpeta>/Travel expenses <viaje>.xlsx" "<carpeta>/Para subir a Concur/<n> Travel expenses <viaje>.pdf"`. Necesita `openpyxl`; para el PDF, `reportlab` (si falta, el script lo dice y la persona puede exportar el Excel a PDF desde Excel).
-3. El total que imprime debe ser **igual** a lo que Concur le reembolsa al viajero (total del reporte menos lo Company Paid). Si difiere en centavos, revisa las tasas.
-4. Concur solo acepta imágenes y PDF como soporte: el PDF es el que se sube.
+1. Build a JSON like `assets/example_sheet.json`: per day, the amounts of each receipt in local currency and **the rate Concur applied that day** (it's on each line); under "other", Uber, taxis, train; under "notes", personal days and the Company Paid ticket (it goes as a note, not in the total).
+2. Run `python3 <skill path>/scripts/expense_sheet.py data.json "<folder>/Travel expenses <trip>.xlsx" "<folder>/To upload to Concur/<n> Travel expenses <trip>.pdf"`. It needs `openpyxl`; for the PDF, `reportlab` (if it's missing, the script says so and the person can export the Excel file to PDF from Excel).
+3. The total it prints must be **equal** to what Concur reimburses the traveler (report total minus Company Paid). If it's off by cents, check the rates.
+4. Concur only accepts images and PDFs as receipts: the PDF is what gets uploaded.
 
-### 9. 🙋 La persona sube los soportes
+### 9. 🙋 The person uploads the receipts
 
-Dale las instrucciones de `references/navegador-concur.md` §7, ábrele la carpeta (macOS: `open "<carpeta>/Para subir a Concur"`; Windows: `explorer "<carpeta>\Para subir a Concur"`) y deja Concur en Expense → Manage Expenses, bajado hasta "Available Receipts". Cuando diga que ya están, verifica que aparezcan todos por nombre.
+Give them the instructions in `references/concur-browser.md` §7, open the folder for them (macOS: `open "<folder>/To upload to Concur"`; Windows: `explorer "<folder>\To upload to Concur"`) and leave Concur on Expense → Manage Expenses, scrolled down to "Available Receipts". When they say they're done, check that all of them show up by name.
 
-### 10. Adjuntar los recibos
+### 10. Attach the receipts
 
-Sigue `references/navegador-concur.md` §5, gasto por gasto, verificando el nombre del archivo adjuntado. Para el tiquete, adjunta el correo o factura de la agencia y suma los pases de abordar.
+Follow `references/concur-browser.md` §5, expense by expense, checking the name of the attached file. For the ticket, attach the agency email or invoice and add the boarding passes.
 
-### 11. 🙋 La persona sube el PDF de la hoja al reporte
+### 11. 🙋 The person uploads the sheet PDF to the report
 
-Manage Receipts → Manage Attachments → **Add** abre el selector de archivos del computador: lo hace ella (`references/navegador-concur.md` §6). Luego verifica que el contador de páginas subió.
+Manage Receipts → Manage Attachments → **Add** opens the computer's file picker: the person does it (`references/concur-browser.md` §6). Then check that the page count went up.
 
-### 12. Revisión final y resumen
+### 12. Final review and summary
 
-- Abre "View Alerts": debe haber **0 errores**. Explica cada advertencia que quede (las del anticipo y "reconcile Fare" son recordatorios fijos que no desaparecen).
-- Confirma que ninguna línea queda sin recibo.
-- Entrega el resumen en una tabla que separe lo que paga la empresa de lo que se reembolsa. Esta distinción confunde: explícala con palabras simples ("el tiquete lo pagó la Alliance a la agencia; no se te devuelve, solo se registra").
+- Open "View Alerts": there must be **0 errors**. Explain every warning left (the cash advance one and "reconcile Fare" are fixed reminders that don't go away).
+- Confirm that no line is left without a receipt.
+- Deliver the summary in a table that separates what the company pays from what is reimbursed. This distinction is confusing: explain it in plain words ("the Alliance paid the agency for the ticket; you don't get it back, it's only recorded").
 
-  | | Moneda de reembolso |
+  | | Reimbursement currency |
   |---|---|
-  | Pagado por la Alliance (Company Paid / tarjeta corporativa) | … |
-  | Lo que se le reembolsa al viajero (Out-of-Pocket, menos anticipo) | … |
-  | **Total del reporte** | … |
+  | Paid by the Alliance (Company Paid / corporate card) | … |
+  | Reimbursed to the traveler (Out-of-Pocket, minus advance) | … |
+  | **Report total** | … |
 
-- Lista lo que el procesador podría preguntar: días sobre el tope, comidas grandes que podrían ser compartidas, costo extra del tiquete por días personales, plazo vencido.
-- Si aprendiste algo del perfil (moneda, agencia, códigos), actualiza el perfil.
+- List what the processor might ask about: days over the cap, large meals that might have been shared, extra ticket cost due to personal days, missed deadline.
+- If you learned something for the profile (currency, agency, codes), update the profile.
 
-### 13. 🙋 La persona envía
+### 13. 🙋 The person submits
 
-Dile exactamente dónde está el botón ("Submit Report", arriba a la derecha) y que al enviar el viajero certifica los gastos. Tú no lo envías.
+Tell them exactly where the button is ("Submit Report", top right) and that by submitting the traveler certifies the expenses. You don't submit it.
 
-## Modo solicitud
+## Travel request mode
 
-1. Datos mínimos: destino, fechas, propósito, código presupuestal o AEC, si necesita anticipo, y la cotización del tiquete de la agencia de su sede.
-2. Arma el encabezado y los gastos esperados según `references/alliance-concur.md` §0.2 y §6. Estima hotel y M&I con las tarifas DSA (pide el valor del calculador de Power BI o deja que Concur lo calcule; no lo inventes). Si habrá días personales, marca "Personal Travel on this trip" desde ya.
-3. Muestra el borrador: título (máximo 32 caracteres: dónde – cuándo – qué), propósito, fechas y gastos esperados.
-4. Si lo pide, llénalo en Concur y déjalo sin enviar (Create Request guarda un borrador). Recuérdale adjuntar itinerario y cotización. Si hay tramos en tren o bus entre ciudades, inclúyelos como gasto esperado: así no quedan fuera de la TR al legalizar.
+1. Minimum data: destination, dates, purpose, budget code or AEC, whether they need a cash advance, and the ticket quote from their hub's agency.
+2. Build the header and the expected expenses per `references/alliance-concur.md` §0.2 and §6. Estimate hotel and M&I with DSA rates (ask for the value from the Power BI calculator or let Concur calculate it; don't make it up). If there will be personal days, tick "Personal Travel on this trip" right away.
+3. Show the draft: title (max 32 characters: where – when – what), purpose, dates and expected expenses.
+4. If asked, fill it in Concur and leave it unsubmitted (Create Request saves a draft). Remind them to attach the itinerary and the quote. If there are intercity train or bus legs, include them as expected expenses so they aren't missing from the TR at expense report time.
 
-## Cuando le devuelven un reporte
+## When a report is sent back
 
-Busca el aviso de Concur (correo de `AutoNotification@concursolutions.com`, si hay conector de Outlook, o el Report Timeline en Concur) con el comentario del procesador, identifica qué línea falló y por qué, propón la corrección concreta y, si quiere, corrígela en Concur sin reenviar.
+Find the Concur notification (email from `AutoNotification@concursolutions.com`, if there's an Outlook connector, or the Report Timeline in Concur) with the processor's comment, identify which line failed and why, propose the specific fix and, if they want, fix it in Concur without resubmitting.
 
-## Mantener la skill al día
+## Keeping the skill up to date
 
-Si un campo, menú o mensaje no coincide con las referencias, detente, cuéntale qué viste y corrige la referencia que corresponda (o anótalo para quien mantiene la skill). Las guías de Finance son de 2023 y la pantalla cambia; cada sede y entidad tiene variantes.
+If a field, menu or message doesn't match the references, stop, tell the person what you saw and fix the relevant reference (or note it for whoever maintains the skill). The Finance guides are from 2023 and the screens change; each hub and entity has its own variations.
 
-Si la carpeta de la skill es un repo de git, después de corregir haz commit con un mensaje que diga qué cambió (sin datos de personas) y pregunta antes de hacer push. Para empaquetar un `.skill` desde el repo, excluye `.git`, `README.md` y `.gitignore` (p. ej. `git archive --prefix=legalizar-viaje/ HEAD -- SKILL.md references scripts assets`).
+If the skill folder is a git repo, after a fix commit with a message that says what changed (no personal data) and ask before pushing. To package a `.skill` from the repo, leave out `.git`, `README.md` and `.gitignore` (e.g. `git archive --prefix=legalizar-viaje/ HEAD -- SKILL.md references scripts assets`).
 
-## Privacidad
+## Privacy
 
-- Los recibos tienen datos personales y financieros. Trabaja con archivos locales; no los subas a servicios externos ni los pegues en búsquedas web.
-- Los perfiles viven fuera de la skill; no los copies dentro de ella. Si actualizas las referencias, anota solo lo general (formularios, mensajes, códigos de oficina, agencias), nunca datos de una persona.
+- Receipts contain personal and financial data. Work with local files; don't upload them to external services or paste them into web searches.
+- Profiles live outside the skill; don't copy them into it. If you update the references, record only general things (forms, messages, office codes, agencies), never an individual's data.

@@ -1,22 +1,22 @@
 # legalizar-viaje
 
-Skill de Claude para preparar en **SAP Concur** las solicitudes de viaje (Travel Request) y las legalizaciones (Expense Report / Expense Claim) de cualquier persona de la **Alliance of Bioversity International and CIAT**, sea de la entidad CIAT o Bioversity y de cualquier sede.
+A Claude skill that prepares **SAP Concur** travel requests (Travel Request) and expense reports (Expense Report / Expense Claim) for any staff member of the **Alliance of Bioversity International and CIAT**, whether in the CIAT or Bioversity entity and at any hub.
 
-*EN: Claude skill that prepares Alliance travel requests and expense reports in SAP Concur from receipts, and builds the supporting expense sheet (Excel + PDF).*
+*The name is Spanish for "settle a trip's expenses". The skill talks to each person in their own language (English, Spanish, French…) and always writes in English in Concur and in the expense sheet.*
 
-## Qué hace
+## What it does
 
-- Lee recibos, tiquetes y pases de abordar (PDF o fotos) y arma la tabla de gastos.
-- Hace las preguntas que solo la persona puede responder: días personales, quién pagó qué, anticipo, etc.
-- Llena el reporte en Concur desde el navegador: encabezado, líneas y recibos adjuntos. Todo queda **en borrador**.
-- Genera la hoja de gastos de soporte (Excel + PDF), con totales que cuadran al centavo con Concur.
-- Al final entrega un resumen que separa lo que es Company Paid de lo reembolsable.
+- Reads receipts, tickets and boarding passes (PDFs or photos) and builds the expense table.
+- Asks the questions only the traveler can answer: personal days, who paid what, cash advance, etc.
+- Fills in the report in Concur through the browser: header, lines and attached receipts. Everything stays **as a draft**.
+- Generates the supporting expense sheet (Excel + PDF), with totals that match Concur to the cent.
+- Ends with a summary that separates what the Alliance paid (Company Paid) from what is reimbursed.
 
-**Nunca** envía el reporte (Submit), ni aprueba nada, ni escribe contraseñas. Hay cuatro momentos en que la persona tiene que intervenir, y la skill los avisa desde el inicio: iniciar sesión, responder dudas, subir archivos y enviar el reporte.
+It **never** submits the report, approves anything or types passwords. The person has to step in at four points, and the skill says so up front: logging in, answering questions, uploading files and submitting the report.
 
-## Instalar
+## Install
 
-**App de Claude (escritorio o claude.ai):** descarga `legalizar-viaje.skill` desde [Releases](../../releases) y súbelo en la configuración de skills (Capabilities → Skills).
+**Claude app (desktop or claude.ai):** download `legalizar-viaje.skill` from [Releases](../../releases) and upload it in the skills settings (Capabilities → Skills).
 
 **Claude Code:**
 
@@ -24,36 +24,38 @@ Skill de Claude para preparar en **SAP Concur** las solicitudes de viaje (Travel
 git clone https://github.com/byliz-ai/legalizar-viaje.git ~/.claude/skills/legalizar-viaje
 ```
 
-Para actualizar: `git -C ~/.claude/skills/legalizar-viaje pull`.
+To update: `git -C ~/.claude/skills/legalizar-viaje pull`.
 
-## Qué se necesita
+## Requirements
 
-- Las skills activadas en Claude.
-- Un navegador que Claude pueda manejar: el panel Browser de la app de Claude o la extensión Claude in Chrome. Sin navegador, la skill igual arma la tabla y la hoja de gastos, y la persona copia los datos a Concur.
-- La sesión de Concur abierta por la persona (`eu2.concursolutions.com`).
-- Python 3 con `openpyxl` (y `reportlab` para el PDF), para la hoja de gastos.
+- Skills enabled in Claude.
+- A browser Claude can drive: the Browser pane in the Claude app or the Claude in Chrome extension. Without a browser, the skill still builds the table and the expense sheet, and the person types the data into Concur.
+- A Concur session opened by the person (`eu2.concursolutions.com`).
+- Python 3 with `openpyxl` (and `reportlab` for the PDF), for the expense sheet.
 
-## Primer uso
+## First use
 
-La primera vez, la skill pregunta lo básico y lo guarda en `~/.claude/legalizar-viaje/perfil.md`: entidad, sede, unidad, moneda de reembolso, tarjeta corporativa, agencia y navegador. Ese perfil queda **solo en el computador de cada persona**; no va en este repo.
+The first time, the skill asks for the basics and saves them in `~/.claude/legalizar-viaje/profile.md`: entity, hub, unit, reimbursement currency, corporate card, travel agency and browser. That profile stays **only on each person's computer**; it is not part of this repo.
 
-Para empezar basta con decirle a Claude algo como "tengo que legalizar el viaje a Roma" o "ayúdame con Concur".
+To start, just tell Claude something like "I need to do the expense report for my trip to Rome" or "help me with Concur".
 
-## Contenido
+## Contents
 
-| Archivo | Para qué |
+| File | Purpose |
 |---|---|
-| `SKILL.md` | Instrucciones de la skill: pasos, momentos en que interviene la persona, reglas |
-| `references/alliance-concur.md` | Política y pantallas de Concur en la Alliance: tipos de gasto, CIAT vs Bioversity, sedes, agencias, contactos |
-| `references/navegador-concur.md` | Cómo manejar los formularios de Concur desde el navegador |
-| `scripts/hoja_gastos.py` | Genera la hoja de gastos (Excel + PDF) |
-| `assets/ejemplo_hoja.json` | Ejemplo de datos para el script |
-| `assets/perfil-plantilla.md` | Plantilla del perfil de cada persona |
+| `SKILL.md` | The skill's instructions: steps, when the person steps in, rules |
+| `references/alliance-concur.md` | Alliance travel policy and Concur screens: expense types, CIAT vs Bioversity, hubs, agencies, contacts |
+| `references/concur-browser.md` | How to drive Concur forms from the browser |
+| `scripts/expense_sheet.py` | Generates the expense sheet (Excel + PDF) |
+| `assets/example_sheet.json` | Sample input for the script |
+| `assets/profile-template.md` | Template for each person's profile |
 
-## Estado
+## Status
 
-Probada de punta a punta en un reporte real de 23 líneas (CIAT, tarjeta personal, nov-2026). Estas partes salen de las guías de Finance y todavía no se han probado en vivo: el flujo con tarjeta corporativa, las particularidades de Bioversity y la opción de delegado. Si algo en Concur no coincide, la skill avisa y propone corregir la referencia.
+Tested end to end on a real 23-line report (CIAT, personal card, Nov 2026). These parts come from the Finance guides and haven't been tested live yet: the corporate card flow, Bioversity specifics and the delegate option. If something in Concur doesn't match, the skill says so and offers to fix the reference.
 
-## Privacidad
+This is an unofficial, personal project; it is not maintained or endorsed by the Alliance's Finance team. Alliance policy always takes precedence over what's written here.
 
-No subas a este repo recibos, hojas de gastos, perfiles ni datos de ninguna persona; el `.gitignore` bloquea los formatos más comunes. Antes de usar la skill con información financiera, confirma que la política de uso de IA de la Alliance lo permite.
+## Privacy
+
+Don't commit receipts, expense sheets, profiles or anyone's data to this repo; the `.gitignore` blocks the most common formats. Before using the skill with financial information, check that the Alliance's AI use policy allows it.

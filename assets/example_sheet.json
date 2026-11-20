@@ -1,0 +1,34 @@
+{
+  "title": "First Last - Course in City (Country) - Travel Request ABCD / Expense Report XYZ123",
+  "approved_mi_usd": 480.00,
+  "days": [
+    {
+      "date": "12th March",
+      "location": "City A (transit) - City B",
+      "rate": 1.0850,
+      "breakfast": [6.50],
+      "lunch": [22.00],
+      "dinner": [31.40],
+      "incidentals": [2.80],
+      "incidentals_comment": "Coffee on the train (2.80)."
+    },
+    {
+      "date": "13th March",
+      "location": "City B",
+      "rate": 1.0862,
+      "lunch": [15.00],
+      "dinner": [4.50, 18.90, 7.00],
+      "dinner_comment": "Evening receipts: Bar X 4.50, Restaurant Y 18.90, Hotel bar 7.00."
+    }
+  ],
+  "other": [
+    {"description": "Taxi home - airport", "date": "11th March", "currency": "KES", "amount": 1500, "rate": 0.0077},
+    {"description": "Train City A - City B", "date": "12th March", "currency": "EUR", "amount": 39.90, "rate": 1.0850}
+  ],
+  "notes": [
+    "All amounts paid out-of-pocket with personal cards. Receipts attached in Concur, in the same order.",
+    "Lodging not claimed (no hotel line in the Travel Request).",
+    "Official travel 11-14 March (14 March = return day). Personal days 15-18 March at traveler's own cost; not claimed.",
+    "Air ticket issued by the travel agency under the Travel Request: USD 750.00, Company Paid (not included in the reimbursement total above)."
+  ]
+}
